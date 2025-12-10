@@ -21,7 +21,7 @@ export const Navbar = ({ setArticles }) => {
     const search = e.target.value;
     try {
       const res = await axios.get(
-        `http://newsapi.org/v2/top-headlines?q=${search}&apiKey=${
+        `https://newsapi.org/v2/top-headlines?q=${search}&apiKey=${
           import.meta.env.VITE_API_KEY
         }`
       );
