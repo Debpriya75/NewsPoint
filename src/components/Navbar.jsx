@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { Search, Menu, X } from "lucide-react"; // ✅ Added X icon
+import { Search, Menu } from "lucide-react";
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -14,28 +14,22 @@ const links = [
   "Sports",
   "Technology",
 ];
-
 export const Navbar = ({ setArticles }) => {
   const { theme, setTheme } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
-
   const handleSearch = async (e) => {
     const search = e.target.value;
     try {
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?q=${search}`,
-        {
-          headers: {
-            "X-Api-Key": import.meta.env.VITE_API_KEY, // ✅ Correct way
-          },
-        }
+        `https://newsapi.org/v2/top-headlines?q=${search}&apiKey=${
+          import.meta.env.VITE_API_KEY
+        }`
       );
       setArticles(res.data.articles);
     } catch (error) {
-      console.error("Error fetching search results:", error);
+      console.log(error);
     }
   };
-
   const toggleTheme = () => {
     if (theme === "light") {
       setTheme("dark");
@@ -58,17 +52,18 @@ export const Navbar = ({ setArticles }) => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex space-x-6">
-          {links.map((link) => (
-            <Link
-              to={`/${link.toLowerCase()}`}
-              key={link}
-              className="text-gray-700 dark:text-gray-200 dark:hover:text-white hover:text-blue-600 transition"
-            >
-              {link}
-            </Link>
-          ))}
+          {links.map((link) => {
+            return (
+              <Link
+                to={`/${link.toLowerCase()}`}
+                key={link}
+                className="text-gray-700 dark:text-gray-200 dark:hover:text-white hover:text-blue-600 transition"
+              >
+                {link}
+              </Link>
+            );
+          })}
         </div>
-
         {/* Right Section */}
         <div className="flex items-center justify-center gap-4">
           <div className="relative bg-gray-200 p-2 rounded-lg">
@@ -91,24 +86,25 @@ export const Navbar = ({ setArticles }) => {
             onClick={() => setOpen(!open)}
             className="md:hidden dark:text-gray-200"
           >
-            {open ? <X size={25} /> : <Menu size={25} />} {/* ✅ Fixed */}
+            {open ? <x size={25} /> : <Menu size={25} />}
           </button>
         </div>
       </div>
-
-      {/* Mobile menu */}
+      {/*mobile menu*/}
       {open && (
         <div className="md:hidden px-4 pb-4">
-          {links.map((link) => (
-            <Link
-              key={link}
-              to={`/${link.toLowerCase()}`}
-              onClick={() => setOpen(false)}
-              className="block py-2 text-gray-700 dark:text-gray-200 dark:hover:text-white hover:text-blue-600 transition"
-            >
-              {link}
-            </Link>
-          ))}
+          {links.map((link) => {
+            return (
+              <Link
+                key={link}
+                to={`/${link.toLowerCase()}`}
+                onClick={() => setOpen(false)}
+                className="block py-2 text-gray-700 dark:text-gray-200 dark:hover:text-white hover:text-blue-600 transition"
+              >
+                {link}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
