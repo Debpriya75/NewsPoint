@@ -10,14 +10,17 @@ export const News = ({ country, category, articles, setArticles }) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}`,
+        {
+          headers: {
+            "X-Api-Key": import.meta.env.VITE_API_KEY,
+          },
+        }
       );
       setArticles(res.data.articles);
       console.log(res.data.articles);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching news:", error);
     } finally {
       setLoading(false);
     }
