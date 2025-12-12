@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { Search, Menu } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -17,24 +17,28 @@ const links = [
 export const Navbar = ({ setArticles }) => {
   const { theme, setTheme } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
-  const handleSearch = async (e) => {
+  let searchTimeout;
+
+  const handleSearch = (e) => {
     const search = e.target.value;
-    if (!search) return; // optional: avoid empty queries
-    try {
-      // max controls number of articles (1-100). Add lang if you want specific language (e.g. en).
-      const res = await axios.get(
-        `https://gnews.io/api/v4/search?q=${encodeURIComponent(
-          search
-        )}&max=20&lang=en&apikey=${import.meta.env.VITE_API_KEY}`
-      );
-      // GNews returns { totalArticles, articles: [...] }
-      setArticles(res.data.articles || []);
-    } catch (error) {
-      console.error(
-        "GNews search error:",
-        error?.response?.data || error.message
-      );
+
+    clearTimeout(searchTimeout);
+
+    if (!search) {
+      setArticles([]);
+      return;
     }
+
+    searchTimeout = setTimeout(async () => {
+      try {
+        const res = await axios.get(
+          `/api/search?q=${encodeURIComponent(search)}&max=20&lang=en`
+        );
+        setArticles(res.data.articles || []);
+      } catch (error) {
+        console.error("Search error:", error);
+      }
+    }, 500); // 500ms debounce
   };
 
   const toggleTheme = () => {
@@ -93,7 +97,7 @@ export const Navbar = ({ setArticles }) => {
             onClick={() => setOpen(!open)}
             className="md:hidden dark:text-gray-200"
           >
-            {open ? <x size={25} /> : <Menu size={25} />}
+            {open ? <X size={25} /> : <Menu size={25} />}
           </button>
         </div>
       </div>
