@@ -10,11 +10,11 @@ export const News = ({ country, category, articles, setArticles }) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${
+        `https://gnews.io/api/v4/top-headlines?country=${country}&category=${category}&max=30&apikey=${
           import.meta.env.VITE_API_KEY
         }`
       );
-      setArticles(res.data.articles);
+      setArticles(res.data.articles || []);
       console.log(res.data.articles);
     } catch (error) {
       console.log(error);

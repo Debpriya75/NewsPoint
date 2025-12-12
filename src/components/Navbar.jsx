@@ -19,17 +19,24 @@ export const Navbar = ({ setArticles }) => {
   const [open, setOpen] = useState(false);
   const handleSearch = async (e) => {
     const search = e.target.value;
+    if (!search) return; // optional: avoid empty queries
     try {
+      // max controls number of articles (1-100). Add lang if you want specific language (e.g. en).
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?q=${search}&apiKey=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `https://gnews.io/api/v4/search?q=${encodeURIComponent(
+          search
+        )}&max=20&lang=en&apikey=${import.meta.env.VITE_API_KEY}`
       );
-      setArticles(res.data.articles);
+      // GNews returns { totalArticles, articles: [...] }
+      setArticles(res.data.articles || []);
     } catch (error) {
-      console.log(error);
+      console.error(
+        "GNews search error:",
+        error?.response?.data || error.message
+      );
     }
   };
+
   const toggleTheme = () => {
     if (theme === "light") {
       setTheme("dark");

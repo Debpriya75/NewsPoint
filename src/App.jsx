@@ -18,7 +18,7 @@ const App = () => {
           path="/"
           element={
             <News
-              country="us"
+              country="in"
               category="general"
               articles={articles}
               setArticles={setArticles}
@@ -29,7 +29,7 @@ const App = () => {
           path="/business"
           element={
             <News
-              country="us"
+              country="in"
               category="business"
               articles={articles}
               setArticles={setArticles}
@@ -40,7 +40,7 @@ const App = () => {
           path="/entertainment"
           element={
             <News
-              country="us"
+              country="in"
               category="entertainment"
               articles={articles}
               setArticles={setArticles}
@@ -51,7 +51,7 @@ const App = () => {
           path="/general"
           element={
             <News
-              country="us"
+              country="in"
               category="general"
               articles={articles}
               setArticles={setArticles}
@@ -62,7 +62,7 @@ const App = () => {
           path="/health"
           element={
             <News
-              country="us"
+              country="in"
               category="health"
               articles={articles}
               setArticles={setArticles}
@@ -73,7 +73,7 @@ const App = () => {
           path="/science"
           element={
             <News
-              country="us"
+              country="in"
               category="science"
               articles={articles}
               setArticles={setArticles}
@@ -84,7 +84,7 @@ const App = () => {
           path="/sports"
           element={
             <News
-              country="us"
+              country="in"
               category="sports"
               articles={articles}
               setArticles={setArticles}
@@ -95,7 +95,7 @@ const App = () => {
           path="/technology"
           element={
             <News
-              country="us"
+              country="in"
               category="technology"
               articles={articles}
               setArticles={setArticles}
