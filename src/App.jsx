@@ -1,18 +1,33 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { Navbar } from "./components/Navbar";
 import { News } from "./pages/News";
 import { ThemeContext } from "./context/ThemeContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 const App = () => {
   const [articles, setArticles] = useState([]);
   const { theme } = useContext(ThemeContext);
 
+  const fetchDefaultNews = async () => {
+    try {
+      const res = await axios.get(
+        `/api/top-headlines?country=in&category=general&max=30`
+      );
+      setArticles(res.data.articles || []);
+    } catch (error) {
+      console.error("Default news error:", error);
+    }
+  };
+
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
+
   return (
     <BrowserRouter>
-      <Navbar setArticles={setArticles} />
+      <Navbar setArticles={setArticles} fetchDefaultNews={fetchDefaultNews} />
+
       <Routes>
         <Route
           path="/"
@@ -24,7 +39,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/business"
           element={
@@ -35,7 +50,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/entertainment"
           element={
@@ -46,7 +61,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/general"
           element={
@@ -57,7 +72,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/health"
           element={
@@ -68,7 +83,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/science"
           element={
@@ -79,7 +94,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/sports"
           element={
@@ -90,7 +105,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
         <Route
           path="/technology"
           element={
@@ -101,7 +116,7 @@ const App = () => {
               setArticles={setArticles}
             />
           }
-        ></Route>
+        />
       </Routes>
     </BrowserRouter>
   );
